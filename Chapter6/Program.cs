@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chapter6
+﻿namespace Exercises
 {
     internal class Program
     {

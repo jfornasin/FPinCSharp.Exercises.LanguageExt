@@ -1,4 +1,6 @@
 ﻿using LanguageExt;
+using NUnit.Framework;
+using FluentAssertions;
 using System;
 
 namespace Exercises.Chapter6
@@ -10,7 +12,7 @@ namespace Exercises.Chapter6
     /// 
     /// that runs the given function in a try/catch, returning an appropriately populated Exceptional
     /// </summary>
-    internal class Exercise3
+    public class Exercise3
     {
         public static Exceptional<T> TryRun<T>(Func<T> throwingFunc)
         {
@@ -44,5 +46,18 @@ namespace Exercises.Chapter6
 
         public Unit Match(Action<T> Success, Action<Exception> Exception) =>
             _inner.Match(Right: Success, Left: Exception);
+    }
+
+    public class TestClass
+    {
+        [Test]
+        public void TryRun_shouldReturnExceptional_ifArgumetnThrows()
+        {
+            Func<string, int> func = (i) => int.Parse(i);
+
+            var x = Exercise3.TryRun(() => func("ciao"));
+
+            x.Match(i => false, ex => true).Should().BeTrue();
+        }
     }
 }
